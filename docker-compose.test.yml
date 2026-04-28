@@ -1,0 +1,5 @@
+services:
+  test-runner:
+    build: .
+    env_file: .env
+    command: ["poetry", "run", "pytest", "tests/", "-v", "--tb=short"]

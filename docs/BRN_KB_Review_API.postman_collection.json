@@ -1,0 +1,723 @@
+{
+    "info": {
+        "name": "BRN KB Review API",
+        "description": "API collection for Broadnet KB Review Service",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health Check",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/health",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "health"
+                    ]
+                },
+                "description": "Check service health and Redis status"
+            }
+        },
+        {
+            "name": "Start Review - Async",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"agent_id\": {{agent_id}},\n  \"analysis_types\": [\"CONTRADICTION\", \"ENTITY_INCONSISTENCY\"],\n  \"similarity_threshold\": 0.85,\n  \"max_candidate_pairs\": 500\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews"
+                    ]
+                },
+                "description": "Start a KB review in async mode (fire and forget)"
+            },
+            "response": []
+        },
+        {
+            "name": "Start Review - Sync",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"agent_id\": {{agent_id}},\n  \"analysis_types\": [\"CONTRADICTION\"],\n  \"similarity_threshold\": 0.85,\n  \"max_candidate_pairs\": 500\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews?wait=true",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews"
+                    ],
+                    "query": [
+                        {
+                            "key": "wait",
+                            "value": "true"
+                        }
+                    ]
+                },
+                "description": "Start a KB review and wait for completion (max 5 minutes)"
+            },
+            "response": []
+        },
+        {
+            "name": "Start Review - Custom Judges",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"agent_id\": {{agent_id}},\n  \"judges\": [\n    {\n      \"provider\": \"litellm\",\n      \"model\": \"gemini/gemini-3-flash-preview\",\n      \"api_key\": \"your_litellm_key\"\n    },\n    {\n      \"provider\": \"fireworks\",\n      \"model\": \"accounts/fireworks/models/llama-v3-8b-instruct\",\n      \"api_key\": \"your_fireworks_key\"\n    }\n  ],\n  \"analysis_types\": [\"CONTRADICTION\", \"ENTITY_INCONSISTENCY\"],\n  \"similarity_threshold\": 0.85,\n  \"max_candidate_pairs\": 500\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews"
+                    ]
+                },
+                "description": "Start a review with custom judge configuration"
+            },
+            "response": []
+        },
+        {
+            "name": "Start Review - No Carryforward",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"agent_id\": {{agent_id}},\n  \"analysis_types\": [\"CONTRADICTION\", \"ENTITY_INCONSISTENCY\"],\n  \"similarity_threshold\": 0.85,\n  \"max_candidate_pairs\": 500\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews?carryforward=false",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews"
+                    ],
+                    "query": [
+                        {
+                            "key": "carryforward",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "description": "Start fresh analysis - ignore findings from previous reviews"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Review Status",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}"
+                    ]
+                },
+                "description": "Get the status and summary of a specific review"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Review Status - Include Minority",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}?include_minority=true",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "include_minority",
+                            "value": "true"
+                        }
+                    ]
+                },
+                "description": "Include findings where only 1 judge voted for the issue"
+            },
+            "response": []
+        },
+        {
+            "name": "List All Reviews",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews"
+                    ]
+                },
+                "description": "List all reviews accessible to the caller"
+            },
+            "response": []
+        },
+        {
+            "name": "List Reviews for Agent",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews?agent_id={{agent_id}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews"
+                    ],
+                    "query": [
+                        {
+                            "key": "agent_id",
+                            "value": "{{agent_id}}"
+                        }
+                    ]
+                },
+                "description": "List reviews for a specific agent"
+            },
+            "response": []
+        },
+        {
+            "name": "Get All Issues",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues"
+                    ]
+                },
+                "description": "Get all issues found in a review"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Issues - by Type",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues?issue_type=DUPLICATE",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues"
+                    ],
+                    "query": [
+                        {
+                            "key": "issue_type",
+                            "value": "DUPLICATE"
+                        }
+                    ]
+                },
+                "description": "Filter issues by type (DUPLICATE, CONTRADICTION, MISSING_CONTEXT)"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Issues - by Severity",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues?severity=CRITICAL",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues"
+                    ],
+                    "query": [
+                        {
+                            "key": "severity",
+                            "value": "CRITICAL"
+                        }
+                    ]
+                },
+                "description": "Filter issues by severity (LOW, MEDIUM, HIGH, CRITICAL)"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Issues - by Confidence",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues?min_confidence=0.85",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues"
+                    ],
+                    "query": [
+                        {
+                            "key": "min_confidence",
+                            "value": "0.85"
+                        }
+                    ]
+                },
+                "description": "Filter issues by minimum confidence score (0.0 - 1.0)"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Issues - by Status",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues?status=OPEN",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues"
+                    ],
+                    "query": [
+                        {
+                            "key": "status",
+                            "value": "OPEN"
+                        }
+                    ]
+                },
+                "description": "Filter issues by status (OPEN, ACKNOWLEDGED, RESOLVED, DISMISSED)"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Issues - Carried Forward",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues?carried_forward=true",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues"
+                    ],
+                    "query": [
+                        {
+                            "key": "carried_forward",
+                            "value": "true"
+                        }
+                    ]
+                },
+                "description": "Get issues carried forward from previous reviews"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Issues - Complex Filter",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues?issue_type=DUPLICATE&severity=CRITICAL&min_confidence=0.85&status=OPEN",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues"
+                    ],
+                    "query": [
+                        {
+                            "key": "issue_type",
+                            "value": "CONTRADICTION"
+                        },
+                        {
+                            "key": "severity",
+                            "value": "CRITICAL"
+                        },
+                        {
+                            "key": "min_confidence",
+                            "value": "0.85"
+                        },
+                        {
+                            "key": "status",
+                            "value": "OPEN"
+                        }
+                    ]
+                },
+                "description": "Complex filter combining multiple criteria"
+            },
+            "response": []
+        },
+        {
+            "name": "Update Issue - Resolve",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"status\": \"RESOLVED\",\n  \"note\": \"Manually verified and resolved by QA team\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues/{{issue_id}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues",
+                        "{{issue_id}}"
+                    ]
+                },
+                "description": "Mark an issue as resolved"
+            },
+            "response": []
+        },
+        {
+            "name": "Update Issue - Dismiss",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"status\": \"DISMISSED\",\n  \"note\": \"False positive - confirmed by subject matter expert\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues/{{issue_id}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues",
+                        "{{issue_id}}"
+                    ]
+                },
+                "description": "Dismiss an issue (false positive)"
+            },
+            "response": []
+        },
+        {
+            "name": "Update Issue - Acknowledge",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"status\": \"ACKNOWLEDGED\",\n  \"note\": \"Acknowledged - scheduled for remediation in Sprint 5\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues/{{issue_id}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues",
+                        "{{issue_id}}"
+                    ]
+                },
+                "description": "Acknowledge an issue (accepted, scheduled for fix)"
+            },
+            "response": []
+        },
+        {
+            "name": "Update Issue - Reopen",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"status\": \"OPEN\",\n  \"note\": \"Reopened - additional context provided\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/review-api/reviews/{{review_id}}/issues/{{issue_id}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "review-api",
+                        "reviews",
+                        "{{review_id}}",
+                        "issues",
+                        "{{issue_id}}"
+                    ]
+                },
+                "description": "Reopen a previously closed issue"
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8062",
+            "type": "string"
+        },
+        {
+            "key": "api_key",
+            "value": "A18qddh131HSD13AJFBA9BAJDccadh&*Adajbabfjb",
+            "type": "string"
+        },
+        {
+            "key": "agent_id",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "review_id",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "issue_id",
+            "value": "1",
+            "type": "string"
+        }
+    ]
+}
