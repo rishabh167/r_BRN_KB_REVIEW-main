@@ -1,0 +1,63 @@
+=============================================================================
+1. SALARY STRUCTURE
+
+The standard annual salary range for Software Engineers is:
+- Entry Level: $80,000 - $100,000
+- Mid Level: $120,000 - $150,000
+- Senior Level: $160,000 - $200,000
+
+Salaries are reviewed annually in March and adjustments are made based on 
+performance evaluations. The maximum salary adjustment per year is 15%.
+
+2. BONUS STRUCTURE
+
+All employees are eligible for an annual performance bonus of 10-20% of 
+base salary, paid in December. Bonuses are determined by:
+- Individual performance rating (40% weight)
+- Team performance (30% weight)
+- Company profitability (30% weight)
+
+3. BENEFITS PACKAGE
+
+Health Insurance: Company covers 80% of premium costs
+Retirement: 401(k) with 5% employer match
+Vacation: 20 days per year for all employees
+Sick Leave: 10 days per year
+
+4. REMOTE WORK POLICY
+
+Remote work is allowed up to 3 days per week. Employees must come to office
+at least 2 days per week for collaboration. Manager approval required.
+
+
+
+1. SALARY STRUCTURE
+
+The standard annual salary range for Software Engineers is:
+- Entry Level: $90,000 - $110,000
+- Mid Level: $130,000 - $160,000
+- Senior Level: $180,000 - $220,000
+
+Salaries are reviewed quarterly in January, April, July, and October. 
+Adjustments are made based on market rates. The maximum salary adjustment 
+per year is 8%.
+
+2. BONUS STRUCTURE
+
+All employees are eligible for an annual performance bonus of 15-25% of 
+base salary, paid in February. Bonuses are determined by:
+- Individual performance rating (50% weight)
+- Team performance (25% weight)
+- Company profitability (25% weight)
+
+3. BENEFITS PACKAGE
+
+Health Insurance: Company covers 90% of premium costs
+Retirement: 401(k) with 8% employer match
+Vacation: 15 days per year for all employees (reduced from 20)
+Sick Leave: 12 days per year
+
+4. REMOTE WORK POLICY
+
+All employees are fully remote. No office attendance required.
+Remote work policy applies 5 days per week indefinitely.

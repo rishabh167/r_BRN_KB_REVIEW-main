@@ -70,6 +70,9 @@ Users can only access agents belonging to their company. Super admins bypass thi
 ## Quick Start
 
 ```bash
+
+poetry run uvicorn app.main:app --host 0.0.0.0 --port 8062
+
 # Copy environment config
 cp .env.example .env
 # Edit .env with your DB, Neo4j, LLM API, and auth credentials
@@ -103,3 +106,7 @@ curl -X POST http://localhost:8062/review-api/reviews \
 docker compose -f docker-compose.test.yml build && \
 docker compose -f docker-compose.test.yml run --rm test-runner
 ```
+
+
+
+
